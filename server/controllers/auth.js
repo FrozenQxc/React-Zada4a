@@ -48,9 +48,8 @@ export const login = async (req, res) => {
 
     // Проверяем, что переданы корректные данные
     if (!username || !password) {
-      return res.status(400).json({
+      return res.json({
         error: {
-          code: "bad_request",
           message: "Неверный запрос. Укажите имя пользователя и пароль.",
         },
       });
@@ -58,9 +57,8 @@ export const login = async (req, res) => {
 
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).json({
+      return res.json({
         error: {
-          code: "unauthorized",
           message: "Пользователь с таким именем не найден.",
         },
       });
@@ -68,9 +66,8 @@ export const login = async (req, res) => {
 
     const isCorrectPassword = await bcrypt.compare(password, user.password);
     if (!isCorrectPassword) {
-      return res.status(401).json({
+      return res.json({
         error: {
-          code: "unauthorized",
           message: "Неверный пароль.",
         },
       });
